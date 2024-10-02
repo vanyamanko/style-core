@@ -1,47 +1,87 @@
 package com.example.style_core
 
+import DbHelper
+import Product
+import ProductAdapter
 import android.os.Bundle
+import android.widget.Button
+import android.widget.EditText
+import android.widget.Toast
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.style_core.ui.theme.StylecoreTheme
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            StylecoreTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+        setContentView(R.layout.activity_login)
+
+        val loginButton: Button = findViewById(R.id.loginButton)
+        val signupButton: Button = findViewById(R.id.signupButton)
+        val emailInput: EditText = findViewById(R.id.emailInput)
+        val passwordInput: EditText = findViewById(R.id.passwordInput)
+        val db = DbHelper(this, null)
+
+        loginButton.setOnClickListener {
+            val email = emailInput.text.toString().trim()
+            val password = passwordInput.text.toString().trim()
+
+            if (db.getUser(email, password)) {
+                Toast.makeText(this, "Successfully logged in!", Toast.LENGTH_SHORT).show()
+
+                setContentView(R.layout.activity_main)
+
+                val products = listOf(
+                    Product("Cotton T-Shirt", 43.00, R.drawable.item1),
+                    Product("Cotton Style T", 40.50, R.drawable.item1),
+                    Product("Cotton Style T", 40.50, R.drawable.item1),
+                    Product("Cotton T-Shirt", 43.00, R.drawable.item1),
+                    Product("Cotton Style T", 40.50, R.drawable.item1),
+                    Product("Cotton Style T", 40.50, R.drawable.item1),
+                    Product("Cotton T-Shirt", 43.00, R.drawable.item1),
+                    Product("Cotton Style T", 40.50, R.drawable.item1),
+                    Product("Cotton Style T", 40.50, R.drawable.item1),
+                    Product("Cotton T-Shirt", 43.00, R.drawable.item1),
+                    Product("Cotton Style T", 40.50, R.drawable.item1),
+                    Product("Cotton Style T", 40.50, R.drawable.item1),
+                    Product("Cotton T-Shirt", 43.00, R.drawable.item1),
+                    Product("Cotton Style T", 40.50, R.drawable.item1),
+                    Product("Cotton Style T", 40.50, R.drawable.item1),
+                    Product("Cotton T-Shirt", 43.00, R.drawable.item1),
+                    Product("Cotton Style T", 40.50, R.drawable.item1),
+                    Product("Cotton Style T", 40.50, R.drawable.item1),
+                    Product("Cotton T-Shirt", 43.00, R.drawable.item1),
+                    Product("Cotton Style T", 40.50, R.drawable.item1),
+                    Product("Cotton Style T", 40.50, R.drawable.item1),
+                    Product("Cotton T-Shirt", 43.00, R.drawable.item1),
+                    Product("Cotton Style T", 40.50, R.drawable.item1),
+                    Product("Cotton Style T", 40.50, R.drawable.item1),
+                    Product("Cotton T-Shirt", 43.00, R.drawable.item1),
+                    Product("Cotton Style T", 40.50, R.drawable.item1),
+                    Product("Cotton Style T", 40.50, R.drawable.item1),
+                )
+
+                val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
+                recyclerView.layoutManager = GridLayoutManager(this, 2)
+                recyclerView.adapter = ProductAdapter(products)
+
+            } else {
+                Toast.makeText(this, "Invalid login or password", Toast.LENGTH_SHORT).show()
             }
         }
-    }
-}
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    StylecoreTheme {
-        Greeting("Android")
+        signupButton.setOnClickListener {
+            val email = emailInput.text.toString().trim()
+            val password = passwordInput.text.toString().trim()
+
+            if (email.isNotEmpty() && password.isNotEmpty()) {
+                val user = User(email, password)
+                db.addUser(user)
+                Toast.makeText(this, "New account created!", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Email or password cannot be empty", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 }
