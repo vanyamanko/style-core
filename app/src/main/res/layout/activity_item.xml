@@ -5,7 +5,6 @@
     android:orientation="vertical"
     android:padding="8dp">
 
-    <!-- Изображение товара -->
     <ImageView
         android:id="@+id/productImage"
         android:layout_width="wrap_content"
@@ -14,7 +13,6 @@
         android:src="@drawable/item1" />
 
 
-    <!-- Название товара -->
     <TextView
         android:id="@+id/productName"
         android:layout_width="wrap_content"
@@ -25,7 +23,6 @@
         android:textSize="16sp"
         android:textStyle="bold" />
 
-    <!-- Цена товара -->
     <TextView
         android:id="@+id/productPrice"
         android:layout_width="wrap_content"
